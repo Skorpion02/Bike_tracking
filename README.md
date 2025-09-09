@@ -45,6 +45,8 @@ Bike_tracking/
 │   ├── index.html
 │   ├── script.js
 │   ├── style.css
+├── package-lock.json
+├── package.json
 └── README.md
 ```
 
