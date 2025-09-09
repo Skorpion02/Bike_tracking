@@ -1,26 +1,42 @@
-# Workshop Tracking
+# Bike Tracking
 
-Sistema sencillo para crear y rastrear órdenes de reparación en un taller, con autenticación para talleristas y administración de usuarios.
-
----
-
-## Características
-
-- **Clientes** pueden crear órdenes seleccionando los servicios a realizar.
-- El sistema genera un **número de orden único** por cada solicitud.
-- Los clientes pueden consultar el **estado** de su orden usando ese número.
-- Los **talleristas** pueden actualizar el estado de cada servicio de una orden (Pendiente, En proceso, Terminado).
-- **Historial** de cambios y usuarios que realizaron cada actualización.
-- **Autenticación por roles**: solo los usuarios con rol "tallerista" pueden actualizar órdenes; solo los usuarios con rol "admin" pueden crear nuevos talleristas.
-- **Panel de administración** simple: un administrador puede registrar nuevos usuarios talleristas.
-- **Primer usuario admin**: Se puede crear mediante una ruta especial pensada para configuraciones iniciales.
+![GitHub Repo stars](https://img.shields.io/github/stars/Skorpion02/Bike_tracking?style=social)
+![GitHub forks](https://img.shields.io/github/forks/Skorpion02/Bike_tracking?style=social)
+![GitHub issues](https://img.shields.io/github/issues/Skorpion02/Bike_tracking)
+![GitHub last commit](https://img.shields.io/github/last-commit/Skorpion02/Bike_tracking)
+![GitHub license](https://img.shields.io/github/license/Skorpion02/Bike_tracking)
 
 ---
 
-## Estructura de carpetas
+## 🚲 Bike Tracking
+
+**Bike Tracking** es un sistema sencillo para crear y rastrear órdenes de reparación en un taller, con autenticación para talleristas y administración de usuarios. Ideal para digitalizar la gestión de servicios de un taller de bicicletas.
+
+---
+
+## ✨ Características
+
+- 📋 Creación de órdenes por parte de clientes seleccionando los servicios a realizar
+- 🔢 Generación de número de orden único por cada solicitud
+- 🔎 Consulta de estado y avance de la orden mediante el número único
+- 🛠️ Talleristas pueden actualizar el estado de cada servicio (Pendiente, En proceso, Terminado)
+- 🕓 Historial de cambios con registro de usuario y fecha
+- 🔐 Autenticación por roles: tallerista y administrador
+- 🧑‍💼 Panel de administración para registrar nuevos usuarios talleristas
+- 🛡️ Creación segura del primer usuario admin mediante endpoint especial
+
+---
+
+## 🚀 Demo
+
+_Pendiente implementación de demo en vivo_
+
+---
+
+## 📦 Estructura del Proyecto
 
 ```
-workshop-tracking/
+Bike_tracking/
 ├── backend/
 │   ├── server.js
 │   ├── orders.json
@@ -29,36 +45,34 @@ workshop-tracking/
 │   ├── index.html
 │   ├── script.js
 │   ├── style.css
-├── README.md
+└── README.md
 ```
 
 ---
 
-## Instalación rápida
+## 🛠️ Instalación local
 
-### 1. Backend
-
-1. Ingresa a la carpeta `backend`
-2. Instala las dependencias:
+1. **Clona el repositorio**
    ```bash
-   npm install express cors jsonwebtoken bcryptjs
+   git clone https://github.com/Skorpion02/Bike_tracking.git
+   cd Bike_tracking
    ```
-3. Inicia el servidor:
+
+2. **Instala las dependencias del backend**
    ```bash
+   cd backend
+   npm install express cors jsonwebtoken bcryptjs
    node server.js
    ```
 
-### 2. Frontend
-
-- Abre `frontend/index.html` en tu navegador (puedes usar Live Server o similar para evitar problemas de CORS en algunos navegadores).
+3. **Abre el frontend**
+   - Abre `frontend/index.html` en tu navegador (puedes usar Live Server para evitar problemas de CORS).
 
 ---
 
-## Primer uso: crear el usuario administrador
+## 👤 Primer uso: Crear el usuario administrador
 
-Antes de poder registrar talleristas, necesitas crear el primer usuario administrador.
-
-Haz una petición POST a:
+Realiza una petición POST a:
 
 ```
 POST http://localhost:3000/api/register-admin
@@ -70,55 +84,55 @@ Content-Type: application/json
 }
 ```
 
-Puedes hacerlo usando [Postman](https://www.postman.com/), [Insomnia](https://insomnia.rest/), o con un pequeño formulario temporal.
+Puedes hacerlo usando [Postman](https://www.postman.com/), [Insomnia](https://insomnia.rest/) o un formulario temporal.
 
-**Una vez creado el admin, inicia sesión en el frontend con ese usuario. Solo los admin verán el formulario de registro de nuevos talleristas.**
-
----
-
-## Flujo de la aplicación
-
-1. **Clientes:**
-   - Crean una orden desde el formulario principal.
-   - Reciben un número de orden único.
-   - Consultan el estado y avance de su orden desde el frontend.
-
-2. **Talleristas:**
-   - Inician sesión con su usuario y contraseña.
-   - Consultan órdenes e **indican el avance de cada servicio**.
-   - Solo pueden modificar el estado de los servicios si están autenticados correctamente.
-
-3. **Administradores:**
-   - Inician sesión con usuario admin.
-   - Ven el formulario de registro de nuevos talleristas.
-   - Registran nuevos usuarios talleristas desde el frontend.
+> Una vez creado el admin, inicia sesión en el frontend. Solo los admin podrán registrar nuevos talleristas.
 
 ---
 
-## Actualizar el estado de los servicios
+## 🧰 Tecnologías usadas
 
-El tallerista (autenticado) puede cambiar el estado de cada servicio dentro de una orden desde el panel de tallerista.  
-El historial de cambios muestra quién realizó cada actualización.
-
----
-
-## Seguridad
-
-- Los tokens JWT aseguran que solo usuarios autenticados puedan actualizar órdenes.
-- El registro de nuevos usuarios está **protegido y solo disponible a administradores**.
-- El endpoint `/api/register-admin` debe usarse solo una vez para crear el primer admin y luego puede ser eliminado o deshabilitado para mayor seguridad.
+- Node.js
+- Express
+- CORS
+- JWT (jsonwebtoken)
+- BcryptJS
+- HTML5, CSS3
+- JavaScript
 
 ---
 
-## Personalización
+## 🔒 Seguridad
 
-- Puedes agregar nuevos servicios fácilmente editando el frontend.
-- El almacenamiento es local usando archivos JSON para facilitar pruebas; para producción puedes cambiar a una base de datos real.
+- Autenticación mediante tokens JWT
+- Registro de usuarios protegido por roles
+- Endpoint de creación de admin solo para configuración inicial
+
+---
+
+## 📄 Licencia
+
+Este proyecto está bajo la licencia [MIT](LICENSE).
 
 ---
 
-## Créditos
+## 🤝 Contribuciones
 
-Creado como ejemplo educativo por solicitud de usuario.
+¡Contribuciones, issues y sugerencias son bienvenidas!  
+No dudes en abrir un issue o un pull request.
 
 ---
+
+## 📬 Contacto
+
+Para dudas o sugerencias, abre un issue o contacta a través de [Skorpion02](https://github.com/Skorpion02).
+
+---
+
+⭐️ **Si te gustó este proyecto, ¡déjale una estrella!**
+
+---
+
+<div align="center">
+  <b>Hecho con ❤️ por Skorpion02</b>
+</div>
