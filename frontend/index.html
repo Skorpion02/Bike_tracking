@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Tracking de Taller</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Tracking de Reparaciones de Taller</h1>
+
+    <section id="crea-orden">
+        <h2>Crear nueva orden</h2>
+        <form id="orderForm">
+            <label>Nombre del cliente: <input type="text" id="customer" required></label><br><br>
+            <label>
+                Servicios solicitados:<br>
+                <input type="checkbox" name="service" value="Cambio de neumáticos"> Cambio de neumáticos<br>
+                <input type="checkbox" name="service" value="Cambio de cadena"> Cambio de cadena<br>
+                <input type="checkbox" name="service" value="Mantenimiento general"> Mantenimiento general<br>
+                <input type="checkbox" name="service" value="Ajuste de frenos"> Ajuste de frenos<br>
+            </label><br>
+            <button type="submit">Crear Orden</button>
+        </form>
+        <div id="orderCreated"></div>
+    </section>
+
+    <hr>
+
+    <section id="tracking">
+        <h2>Rastrea tu orden</h2>
+        <form id="trackForm">
+            <label>Número de orden: <input type="text" id="trackOrderId" required></label>
+            <button type="submit">Consultar</button>
+        </form>
+        <div id="orderStatus"></div>
+    </section>
+
+    <hr>
+
+    <section id="registro-tallerista" style="display:none">
+        <h2>Registrar nuevo tallerista</h2>
+        <form id="registerForm">
+            <label>Usuario: <input type="text" id="registerUser" required></label>
+            <label>Contraseña: <input type="password" id="registerPass" required></label>
+            <button type="submit">Registrar</button>
+        </form>
+        <div id="registerStatus"></div>
+    </section>
+
+    <hr>
+
+    <section id="login-tallerista">
+        <h2>Login Tallerista/Admin</h2>
+        <form id="loginForm">
+            <label>Usuario: <input type="text" id="loginUser" required></label>
+            <label>Contraseña: <input type="password" id="loginPass" required></label>
+            <button type="submit">Entrar</button>
+        </form>
+        <div id="loginStatus"></div>
+    </section>
+
+    <hr>
+
+    <section id="tallerista" style="display:none">
+        <h2>Panel de Tallerista: Actualizar Estado de Orden</h2>
+        <button id="logoutBtn" style="float:right;margin-top:-2em;">Cerrar sesión</button>
+        <form id="talleristaSearchForm">
+            <label>Número de orden: <input type="text" id="talleristaOrderId" required></label>
+            <button type="submit">Buscar Orden</button>
+        </form>
+        <div id="talleristaPanel"></div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>

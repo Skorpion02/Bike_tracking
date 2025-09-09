@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taller Mecánico - Sistema de Tracking</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navegación -->
+    <nav class="navbar">
+    <div class="nav-container">
+        <a class="logo" href="home.html">🔧🚲 Taller Pro</a>
+        <ul class="nav-links">
+            <li><a href="home.html">Inicio</a></li>
+            <li><a href="crear-orden.html">Crear Orden</a></li>
+            <li><a href="rastrear-orden.html" class="active">Rastrear Orden</a></li>
+            <li><a href="admin-login.html">Admin/Tallerista</a></li>
+        </ul>
+    </div>
+    </nav>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="card text-center">
+            <h1>🔧 Sistema de Tracking de Reparaciones</h1>
+            <p style="font-size: 1.2rem; color: var(--gray-600); margin-bottom: 2rem;">
+                Gestiona y rastrea el estado de las reparaciones de tu vehículo en tiempo real
+            </p>
+            
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="crear-orden.html" class="btn btn-primary">
+                    ➕ Crear Nueva Orden
+                </a>
+                <a href="rastrear-orden.html" class="btn btn-secondary">
+                    🔍 Rastrear Mi Orden
+                </a>
+            </div>
+        </div>
+
+        <!-- Servicios Disponibles -->
+        <div class="card">
+            
+            <h2>🛠️ Servicios Disponibles</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+                <div style="background: var(--gray-50); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🚲</div>
+                    <h3 style="color: var(--gray-800); margin-bottom: 0.5rem;">Cambio de Neumáticos</h3>
+                    <p style="color: var(--gray-600); font-size: 0.9rem;">Instalación y balanceo de neumáticos nuevos</p>
+                </div>
+                
+                <div style="background: var(--gray-50); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔗</div>
+                    <h3 style="color: var(--gray-800); margin-bottom: 0.5rem;">Cambio de Cadena</h3>
+                    <p style="color: var(--gray-600); font-size: 0.9rem;">Reemplazo de cadena de distribución</p>
+                </div>
+                
+                <div style="background: var(--gray-50); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔧</div>
+                    <h3 style="color: var(--gray-800); margin-bottom: 0.5rem;">Mantenimiento General</h3>
+                    <p style="color: var(--gray-600); font-size: 0.9rem;">Revisión completa del vehículo</p>
+                </div>
+                
+                <div style="background: var(--gray-50); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🛑</div>
+                    <h3 style="color: var(--gray-800); margin-bottom: 0.5rem;">Ajuste de Frenos</h3>
+                    <p style="color: var(--gray-600); font-size: 0.9rem;">Mantenimiento del sistema de frenado</p>
+                </div>
+
+                <!-- Nuevos servicios añadidos -->
+                <div style="background: var(--gray-50); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚙️</div>
+                    <h3 style="color: var(--gray-800); margin-bottom: 0.5rem;">Ajuste de Cambios</h3>
+                    <p style="color: var(--gray-600); font-size: 0.9rem;">Regulación y alineación de cambios (desviador y piñón)</p>
+                </div>
+                
+                <div style="background: var(--gray-50); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🧽</div>
+                    <h3 style="color: var(--gray-800); margin-bottom: 0.5rem;">Limpieza Profunda</h3>
+                    <p style="color: var(--gray-600); font-size: 0.9rem;">Lavado y limpieza detallada de la bicicleta y transmisión</p>
+                </div>
+                
+                <div style="background: var(--gray-50); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔩</div>
+                    <h3 style="color: var(--gray-800); margin-bottom: 0.5rem;">Ajuste de Rayos</h3>
+                    <p style="color: var(--gray-600); font-size: 0.9rem;">Centrado y tensado de ruedas</p>
+                </div>
+                
+                <div style="background: var(--gray-50); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🛡️</div>
+                    <h3 style="color: var(--gray-800); margin-bottom: 0.5rem;">Revisión de Suspensión</h3>
+                    <p style="color: var(--gray-600); font-size: 0.9rem;">Inspección y mantenimiento de suspensión delantera y trasera</p>
+                </div>
+                
+                <div style="background: var(--gray-50); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">💡</div>
+                    <h3 style="color: var(--gray-800); margin-bottom: 0.5rem;">Instalación de Accesorios</h3>
+                    <p style="color: var(--gray-600); font-size: 0.9rem;">Montaje de luces, timbres, portabultos y otros accesorios</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cómo Funciona -->
+        <div class="card">
+            <h2>📋 Cómo Funciona</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-top: 1.5rem;">
+                <div style="text-align: center;">
+                    <div style="background: var(--primary-color); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; margin: 0 auto 1rem;">1</div>
+                    <h4 style="color: var(--gray-800); margin-bottom: 0.5rem;">Crea tu Orden</h4>
+                    <p style="color: var(--gray-600); font-size: 0.9rem;">Llena el formulario con tus datos y selecciona los servicios necesarios</p>
+                </div>
+                
+                <div style="text-align: center;">
+                    <div style="background: var(--primary-color); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; margin: 0 auto 1rem;">2</div>
+                    <h4 style="color: var(--gray-800); margin-bottom: 0.5rem;">Recibe tu Número</h4>
+                    <p style="color: var(--gray-600); font-size: 0.9rem;">Guarda el número de orden que te asignamos para hacer seguimiento</p>
+                </div>
+                
+                <div style="text-align: center;">
+                    <div style="background: var(--primary-color); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; margin: 0 auto 1rem;">3</div>
+                    <h4 style="color: var(--gray-800); margin-bottom: 0.5rem;">Rastrea el Estado</h4>
+                    <p style="color: var(--gray-600); font-size: 0.9rem;">Consulta en tiempo real el progreso de tu reparación</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estados de Orden -->
+        <div class="card">
+            <h2>📊 Estados de las Órdenes</h2>
+            <div style="display: flex; gap: 1rem; justify-content: space-around; flex-wrap: wrap; margin-top: 1.5rem;">
+                <div style="text-align: center;">
+                    <span class="status-badge status-Pendiente">Pendiente</span>
+                    <p style="font-size: 0.85rem; color: var(--gray-600); margin-top: 0.5rem;">Tu orden está en cola</p>
+                </div>
+                <div style="text-align: center;">
+                    <span class="status-badge status-En\ proceso">En Proceso</span>
+                    <p style="font-size: 0.85rem; color: var(--gray-600); margin-top: 0.5rem;">Trabajando en tu vehículo</p>
+                </div>
+                <div style="text-align: center;">
+                    <span class="status-badge status-Terminado">Terminado</span>
+                    <p style="font-size: 0.85rem; color: var(--gray-600); margin-top: 0.5rem;">Listo para recoger</p>
+                </div>
+                <div style="text-align: center;">
+                    <span class="status-badge status-Cancelado">❌ Cancelado</span>
+                    <p style="font-size: 0.85rem; color: var(--gray-600); margin-top: 0.5rem;">Orden cancelada</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

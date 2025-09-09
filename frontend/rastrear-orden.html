@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rastrear Orden - Taller Mecánico</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navegación -->
+    <nav class="navbar">
+    <div class="nav-container">
+        <a class="logo" href="home.html">🔧🚲 Taller Pro</a>
+        <ul class="nav-links">
+            <li><a href="home.html">Inicio</a></li>
+            <li><a href="crear-orden.html">Crear Orden</a></li>
+            <li><a href="rastrear-orden.html" class="active">Rastrear Orden</a></li>
+            <li><a href="admin-login.html">Admin/Tallerista</a></li>
+        </ul>
+    </div>
+    </nav>
+
+    <div class="container">
+        <div class="card">
+            <h1>🔍 Rastrear Estado de Orden</h1>
+            <p style="color: var(--gray-600); margin-bottom: 2rem; text-align: center;">
+                Ingresa tu número de orden para consultar el estado actual de tu reparación
+            </p>
+
+            <form id="trackForm">
+                <div class="form-group">
+                    <label for="trackOrderId" class="form-label">
+                        🎫 Número de Orden
+                    </label>
+                    <input 
+                        type="text" 
+                        id="trackOrderId" 
+                        class="form-input" 
+                        placeholder="Ej: 123456"
+                        required
+                        style="font-size: 1.2rem; text-align: center; font-weight: bold;"
+                    >
+                    <small style="color: var(--gray-500); display: block; margin-top: 0.5rem;">
+                        💡 Encuentra tu número de orden en el mensaje que recibiste al crear tu solicitud
+                    </small>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.1rem;">
+                    🔍 Consultar Estado de la Orden
+                </button>
+            </form>
+
+            <div id="orderStatus"></div>
+        </div>
+
+        <!-- Información sobre estados -->
+        <div class="card">
+            <h2>📊 Significado de los Estados</h2>
+            <div style="display: grid; gap: 1rem; margin-top: 1rem;">
+                <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--gray-50); border-radius: 8px;">
+                    <span class="status-badge status-Pendiente" style="flex-shrink: 0;">Pendiente</span>
+                    <div>
+                        <strong style="color: var(--gray-800);">Tu orden está en cola</strong>
+                        <p style="color: var(--gray-600); margin: 0; font-size: 0.9rem;">Hemos recibido tu solicitud y será procesada en breve.</p>
+                    </div>
+                </div>
+                
+                <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--gray-50); border-radius: 8px;">
+                    <span class="status-badge status-En\ proceso" style="flex-shrink: 0;">En Proceso</span>
+                    <div>
+                        <strong style="color: var(--gray-800);">Trabajando en tu vehículo</strong>
+                        <p style="color: var(--gray-600); margin: 0; font-size: 0.9rem;">Nuestros técnicos están realizando el servicio solicitado.</p>
+                    </div>
+                </div>
+                
+                <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--gray-50); border-radius: 8px;">
+                    <span class="status-badge status-Terminado" style="flex-shrink: 0;">Terminado</span>
+                    <div>
+                        <strong style="color: var(--gray-800);">Listo para recoger</strong>
+                        <p style="color: var(--gray-600); margin: 0; font-size: 0.9rem;">El servicio ha sido completado. ¡Ya puedes venir por tu vehículo!</p>
+                    </div>
+                </div>
+                
+                <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--gray-50); border-radius: 8px;">
+                    <span class="status-badge status-Cancelado" style="flex-shrink: 0;">❌ Cancelado</span>
+                    <div>
+                        <strong style="color: var(--gray-800);">Orden cancelada</strong>
+                        <p style="color: var(--gray-600); margin: 0; font-size: 0.9rem;">El servicio no ha poidod ser completado. ¡Ponerse en contacto!</p>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "http://localhost:3000/api";
+
+        // ----------- CONSULTAR ORDEN (CLIENTE) -----------
+        document.getElementById('trackForm').onsubmit = async function (e) {
+            e.preventDefault();
+            const orderId = document.getElementById('trackOrderId').value.trim();
+            const statusDiv = document.getElementById('orderStatus');
+            
+            if (!orderId) {
+                statusDiv.innerHTML = `
+                    <div class="alert alert-warning">
+                        ⚠️ <strong>Atención:</strong> Por favor ingresa un número de orden válido.
+                    </div>`;
+                return;
+            }
+
+            // Mostrar mensaje de carga
+            statusDiv.innerHTML = `
+                <div style="text-align: center; padding: 2rem; color: var(--gray-600);">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">⏳</div>
+                    <p>Consultando el estado de tu orden...</p>
+                </div>`;
+
+            try {
+                const res = await fetch(`${API_URL}/orders/${orderId}`);
+                
+                if (res.ok) {
+                    const order = await res.json();
+                    let html = `
+                        <div class="alert alert-success" style="margin-top: 2rem;">
+                            <h3 style="color: var(--success-color); margin-bottom: 1rem;">
+                                ✅ Orden Encontrada - #${orderId}
+                            </h3>
+                            
+                            <div style="background: white; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap;">
+                                    <div>
+                                        <h4 style="color: var(--gray-800); margin-bottom: 0.5rem;">👤 Cliente</h4>
+                                        <p style="font-size: 1.1rem; font-weight: bold; color: var(--primary-color);">${order.customer}</p>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <h4 style="color: var(--gray-800); margin-bottom: 0.5rem;">📅 Creada</h4>
+                                        <p style="color: var(--gray-600);">${new Date(order.createdAt).toLocaleDateString()}</p>
+                                    </div>
+                                </div>
+                                
+                                <h4 style="color: var(--gray-800); margin-bottom: 1rem;">🛠️ Servicios Solicitados:</h4>
+                                <div class="order-services" style="margin-bottom: 1.5rem;">`;
+                    
+                    for (const service of order.services) {
+                        html += `
+                            <div style="background: var(--gray-50); padding: 1rem; border-radius: 8px; border-left: 4px solid var(--primary-color);">
+                                <div style="display: flex; justify-content: between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                                    <strong style="color: var(--gray-800);">${service.name}</strong>
+                                    <span class="status-badge status-${service.status.replace(' ', '\\ ')}">${service.status}</span>
+                                </div>
+                            </div>`;
+                    }
+                    
+                    html += `</div>`;
+                    
+                    // Mostrar historial si existe
+                    if (order.history && order.history.length > 0) {
+                        html += `
+                            <h4 style="color: var(--gray-800); margin-bottom: 1rem;">📋 Historial de Cambios:</h4>
+                            <div style="background: var(--gray-50); padding: 1rem; border-radius: 8px;">`;
+                        
+                        for (const h of order.history.reverse()) {
+                            const fecha = new Date(h.timestamp).toLocaleString();
+                            html += `
+                                <div style="padding: 0.75rem; border-bottom: 1px solid var(--gray-200); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+                                    <div>
+                                        <strong style="color: var(--primary-color);">${h.service}</strong>
+                                        <span style="margin: 0 0.5rem;">→</span>
+                                        <span class="status-badge status-${h.status.replace(' ', '\\ ')}">${h.status}</span>
+                                        ${h.usuario ? `<small style="color: var(--gray-500); margin-left: 0.5rem;">(por ${h.usuario})</small>` : ''}
+                                    </div>
+                                    <small style="color: var(--gray-500);">${fecha}</small>
+                                </div>`;
+                        }
+                        html += `</div>`;
+                    }
+                    
+                    html += `
+                            </div>
+                            <div style="text-align: center; margin-top: 1.5rem;">
+                                <button onclick="location.reload()" class="btn btn-secondary">🔄 Actualizar Estado</button>
+                            </div>
+                        </div>`;
+                    
+                    statusDiv.innerHTML = html;
+                } else if (res.status === 404) {
+                    statusDiv.innerHTML = `
+                        <div class="alert alert-error" style="margin-top: 2rem; text-align: center;">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">❌</div>
+                            <h3 style="color: var(--danger-color); margin-bottom: 1rem;">Orden No Encontrada</h3>
+                            <p>No se encontró ninguna orden con el número <strong>${orderId}</strong></p>
+                            <div style="background: var(--gray-50); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                                <p style="color: var(--gray-700); margin: 0;"><strong>Verifica que:</strong></p>
+                                <ul style="text-align: left; color: var(--gray-600); margin: 0.5rem 0;">
+                                    <li>El número de orden sea correcto</li>
+                                    <li>No hayas confundido números o letras</li>
+                                    <li>La orden haya sido creada recientemente</li>
+                                </ul>
+                            </div>
+                            <a href="crear-orden.html" class="btn btn-primary">➕ Crear Nueva Orden</a>
+                        </div>`;
+                } else {
+                    throw new Error(`Error del servidor: ${res.status}`);
+                }
+            } catch (error) {
+                console.error('Error al consultar orden:', error);
+                statusDiv.innerHTML = `
+                    <div class="alert alert-error" style="margin-top: 2rem; text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🔌</div>
+                        <h3 style="color: var(--danger-color); margin-bottom: 1rem;">Error de Conexión</h3>
+                        <p>${error.message}</p>
+                        <small style="color: var(--gray-600);">
+                            Verifica que el servidor esté ejecutándose en http://localhost:3000
+                        </small>
+                        <div style="margin-top: 1rem;">
+                            <button onclick="location.reload()" class="btn btn-secondary">🔄 Reintentar</button>
+                        </div>
+                    </div>`;
+            }
+        };
+
+        // Auto-focus en el campo de número de orden
+        document.getElementById('trackOrderId').focus();
+    </script>
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Orden - Taller Mecánico</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navegación -->
+    <nav class="navbar">
+    <div class="nav-container">
+        <a class="logo" href="home.html">🔧🚲 Taller Pro</a>
+        <ul class="nav-links">
+            <li><a href="home.html">Inicio</a></li>
+            <li><a href="crear-orden.html">Crear Orden</a></li>
+            <li><a href="rastrear-orden.html" class="active">Rastrear Orden</a></li>
+            <li><a href="admin-login.html">Admin/Tallerista</a></li>
+        </ul>
+    </div>
+    </nav>
+
+        <div class="container">
+            <div class="card">
+                <h1>➕ Crear Nueva Orden de Reparación</h1>
+                <p style="color: var(--gray-600); margin-bottom: 2rem; text-align: center;">
+                    Completa el formulario para solicitar nuestros servicios de reparación
+                </p>
+
+            <form id="orderForm">
+                <div class="form-group">
+                    <label for="nombre" class="form-label">
+                        👤 Nombre *
+                    </label>
+                    <input 
+                        type="text" 
+                        id="nombre" 
+                        class="form-input" 
+                        placeholder="Ingresa tu nombre"
+                        required
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="apellido" class="form-label">
+                        👤 Apellido *
+                    </label>
+                    <input 
+                        type="text" 
+                        id="apellido" 
+                        class="form-input" 
+                        placeholder="Ingresa tu apellido"
+                        required
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="documento" class="form-label">
+                        🪪 Número de Documento *
+                    </label>
+                    <input 
+                        type="text" 
+                        id="documento" 
+                        class="form-input" 
+                        placeholder="Ej: 12345678"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        🛠️ Servicios Solicitados *
+                    </label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="service" value="Cambio de neumáticos" id="service1">
+                                <label for="service1">
+                                    <strong>Cambio de neumáticos</strong>
+                                    <br><small style="color: var(--gray-500);">Instalación y balanceo de neumáticos nuevos</small>
+                                </label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="service" value="Cambio de cadena" id="service2">
+                                <label for="service2">
+                                    <strong>Cambio de cadena</strong>
+                                    <br><small style="color: var(--gray-500);">Reemplazo de cadena de distribución</small>
+                                </label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="service" value="Mantenimiento general" id="service3">
+                                <label for="service3">
+                                    <strong>Mantenimiento general</strong>
+                                    <br><small style="color: var(--gray-500);">Revisión completa del vehículo</small>
+                                </label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="service" value="Ajuste de frenos" id="service4">
+                                <label for="service4">
+                                    <strong>Ajuste de frenos</strong>
+                                    <br><small style="color: var(--gray-500);">Mantenimiento del sistema de frenado</small>
+                                </label>
+                            </div>
+
+                            <!-- Nuevos servicios añadidos -->
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="service" value="Ajuste de cambios" id="service5">
+                                <label for="service5">
+                                    <strong>Ajuste de cambios</strong>
+                                    <br><small style="color: var(--gray-500);">Regulación y alineación de cambios (desviador y piñón)</small>
+                                </label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="service" value="Limpieza profunda" id="service6">
+                                <label for="service6">
+                                    <strong>Limpieza profunda</strong>
+                                    <br><small style="color: var(--gray-500);">Lavado y limpieza detallada de la bicicleta y transmisión</small>
+                                </label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="service" value="Ajuste de rayos" id="service7">
+                                <label for="service7">
+                                    <strong>Ajuste de rayos</strong>
+                                    <br><small style="color: var(--gray-500);">Centrado y tensado de ruedas</small>
+                                </label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="service" value="Revisión de suspensión" id="service8">
+                                <label for="service8">
+                                    <strong>Revisión de suspensión</strong>
+                                    <br><small style="color: var(--gray-500);">Inspección y mantenimiento de suspensión delantera y trasera</small>
+                                </label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" name="service" value="Instalación de accesorios" id="service9">
+                                <label for="service9">
+                                    <strong>Instalación de accesorios</strong>
+                                    <br><small style="color: var(--gray-500);">Montaje de luces, timbres, portabultos y otros accesorios</small>
+                                </label>
+                            </div>
+                        </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.1rem;">
+                    ✨ Crear Orden de Reparación
+                </button>
+            </form>
+
+            <div id="orderCreated"></div>
+        </div>
+
+        <!-- Información adicional -->
+        <div class="card">
+            <h2>ℹ️ Información Importante</h2>
+            <ul style="color: var(--gray-600); line-height: 1.8;">
+                <li><strong>Tiempo de espera:</strong> Las órdenes se procesan en orden de llegada</li>
+                <li><strong>Notificaciones:</strong> Recibirás actualizaciones sobre el progreso de tu reparación</li>
+                <li><strong>Número de orden:</strong> Guarda tu número de orden para hacer seguimiento</li>
+                <li><strong>Horarios:</strong> Lunes a Viernes de 8:00 AM a 6:00 PM</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "http://localhost:3000/api";
+
+        // ----------- CREAR ORDEN -----------
+        document.getElementById('orderForm').onsubmit = async function (e) {
+        e.preventDefault();
+        const nombre = document.getElementById('nombre').value;
+        const apellido = document.getElementById('apellido').value;
+        const documento = document.getElementById('documento').value;
+        const services = [...document.querySelectorAll('input[name=service]:checked')].map(cb => cb.value);
+
+        console.log('Datos a enviar:', { nombre, apellido, documento, services });
+
+        if (services.length === 0) {
+            document.getElementById('orderCreated').innerHTML = 
+                `<div class="alert alert-warning">
+                    ⚠️ <strong>Atención:</strong> Debes seleccionar al menos un servicio para continuar.
+                </div>`;
+            return;
+        }
+
+        document.getElementById('orderCreated').innerHTML = '';
+
+        try {
+            const res = await fetch(`${API_URL}/orders`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nombre, apellido, documento, services })
+            });
+
+            console.log('Respuesta del servidor:', res.status, res.statusText);
+
+            if (!res.ok) {
+                throw new Error(`Error ${res.status}: ${res.statusText}`);
+            }
+
+            const data = await res.json();
+            console.log('Datos recibidos:', data);
+
+            if (data.orderId) {
+                const successMessage = document.createElement('div');
+                successMessage.innerHTML = 
+                    `<div class="alert alert-success" style="text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🎉</div>
+                        <h3 style="color: var(--success-color); margin-bottom: 1rem;">¡Orden Creada Exitosamente!</h3>
+                        <div style="background: white; padding: 1.5rem; border-radius: 8px; margin: 1rem 0; border: 2px dashed var(--success-color);">
+                            <p style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--gray-700);">Tu número de orden es:</p>
+                            <div style="font-size: 2.5rem; font-weight: bold; color: var(--primary-color); margin: 0.5rem 0;">${data.orderId}</div>
+                            <p style="font-size: 0.9rem; color: var(--gray-600);">💡 Guarda este número para rastrear tu orden</p>
+                        </div>
+                        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem;">
+                            <a href="rastrear-orden.html" class="btn btn-primary">🔍 Rastrear Mi Orden</a>
+                            <button onclick="this.closest('.alert').remove()" class="btn btn-secondary">✕ Cerrar</button>
+                        </div>
+                    </div>`;
+                
+                document.getElementById('orderCreated').appendChild(successMessage);
+
+                // Resetear los campos del formulario
+                document.getElementById('nombre').value = '';
+                document.getElementById('apellido').value = '';
+                document.getElementById('documento').value = '';
+                document.querySelectorAll('input[name="service"]:checked').forEach(cb => cb.checked = false);
+
+                document.getElementById('orderCreated').scrollIntoView({ behavior: 'smooth' });
+
+                console.log('Mensaje de éxito creado y debería permanecer visible');
+            } else {
+                document.getElementById('orderCreated').innerHTML = 
+                    `<div class="alert alert-error">
+                        ❌ <strong>Error:</strong> ${data.error || 'No se pudo crear la orden. Inténtalo nuevamente.'}
+                    </div>`;
+            }
+        } catch (error) {
+            console.error('Error al crear orden:', error);
+            document.getElementById('orderCreated').innerHTML = 
+                `<div class="alert alert-error">
+                    🔌 <strong>Error de conexión:</strong> ${error.message}<br>
+                    <small>Verifica que el servidor esté ejecutándose en http://localhost:3000</small>
+                </div>`;
+        }
+    };
+    </script>
+</body>
+</html>

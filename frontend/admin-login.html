@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin/Tallerista - Taller Mecánico</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a class="logo" href="home.html">🔧 Taller Pro</a>
+            <ul class="nav-links">
+                <li><a href="home.html">Inicio</a></li>
+                <li><a href="crear-orden.html">Crear Orden</a></li>
+                <li><a href="rastrear-orden.html">Rastrear Orden</a></li>
+                <li><a href="admin-login.html" class="active">Admin/Tallerista</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Registro de Tallerista (solo admin) -->
+        <div id="registro-tallerista" class="card" style="display:none">
+            <h2>👥 Registrar Nuevo Tallerista</h2>
+            <p style="color: var(--gray-600); margin-bottom: 1.5rem;">
+                Solo los administradores pueden registrar nuevos talleristas en el sistema
+            </p>
+            
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerUser" class="form-label">
+                        👤 Usuario del Tallerista
+                    </label>
+                    <input 
+                        type="text" 
+                        id="registerUser" 
+                        class="form-input" 
+                        placeholder="Nombre de usuario"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="registerPass" class="form-label">
+                        🔒 Contraseña
+                    </label>
+                    <input 
+                        type="password" 
+                        id="registerPass" 
+                        class="form-input" 
+                        placeholder="Contraseña segura"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="btn btn-success" style="width: 100%;">
+                    ➕ Registrar Tallerista
+                </button>
+            </form>
+            
+            <div id="registerStatus"></div>
+        </div>
+
+        <!-- Login de Tallerista/Admin -->
+        <div id="login-tallerista" class="card">
+            <h1>🔐 Acceso Tallerista/Admin</h1>
+            <p style="color: var(--gray-600); margin-bottom: 2rem; text-align: center;">
+                Ingresa con tus credenciales para acceder al panel de gestión de órdenes
+            </p>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginUser" class="form-label">
+                        👤 Usuario
+                    </label>
+                    <input 
+                        type="text" 
+                        id="loginUser" 
+                        class="form-input" 
+                        placeholder="Tu nombre de usuario"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="loginPass" class="form-label">
+                        🔒 Contraseña
+                    </label>
+                    <input 
+                        type="password" 
+                        id="loginPass" 
+                        class="form-input" 
+                        placeholder="Tu contraseña"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.1rem;">
+                    🚪 Iniciar Sesión
+                </button>
+            </form>
+            
+            <div id="loginStatus"></div>
+        </div>
+
+        <!-- Panel de Tallerista -->
+        <div id="tallerista" class="card" style="display:none">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap;">
+                <h1>🛠️ Panel de Tallerista</h1>
+                <button id="logoutBtn" class="btn btn-danger">
+                    🚪 Cerrar Sesión
+                </button>
+            </div>
+            
+            <!-- Pestañas para navegar entre funciones -->
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap;">
+                <button id="tabBuscar" class="btn btn-primary">
+                    🔍 Buscar Orden
+                </button>
+                <button id="tabListar" class="btn btn-secondary">
+                    📋 Ver Todas las Órdenes
+                </button>
+            </div>
+
+            <!-- Sección: Buscar Orden Individual -->
+            <div id="seccionBuscar">
+                <p style="color: var(--gray-600); margin-bottom: 2rem;">
+                    Busca órdenes por número para actualizar el estado de los servicios
+                </p>
+
+                <form id="talleristaSearchForm">
+                    <div class="form-group">
+                        <label for="talleristaOrderId" class="form-label">
+                            🎫 Número de Orden
+                        </label>
+                        <input 
+                            type="text" 
+                            id="talleristaOrderId" 
+                            class="form-input" 
+                            placeholder="Ingresa el número de orden"
+                            required
+                        >
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        🔍 Buscar Orden
+                    </button>
+                </form>
+                
+                <div id="talleristaPanel"></div>
+            </div>
+
+            <!-- Sección: Lista de Todas las Órdenes -->
+            <div id="seccionListar" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+                    <p style="color: var(--gray-600); margin: 0;">
+                        Visualiza y gestiona todas las órdenes del taller
+                    </p>
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <label for="filtroEstado" style="color: var(--gray-700); font-weight: 600;">Filtrar:</label>
+                        <select id="filtroEstado" class="form-input" style="width: auto;">
+                            <option value="todas">Todas las órdenes</option>
+                            <option value="Pendiente">Pendientes</option>
+                            <option value="En proceso">En Proceso</option>
+                            <option value="Terminado">Terminadas</option>
+                            <option value="Cancelado">❌ Canceladas</option>
+                        </select>
+                        <button id="btnRefrescar" class="btn btn-secondary">
+                            🔄 Refrescar
+                        </button>
+                    </div>
+                </div>
+
+                <div id="listaOrdenes"></div>
+            </div>
+        </div>
+
+        <!-- Información para usuarios -->
+        <div class="card">
+            <h2>ℹ️ Información de Acceso</h2>
+            <div style="background: var(--gray-50); padding: 1.5rem; border-radius: 8px;">
+                <h4 style="color: var(--gray-800); margin-bottom: 1rem;">👥 Tipos de Usuario:</h4>
+                <ul style="color: var(--gray-600); line-height: 1.8;">
+                    <li><strong>Admin:</strong> Puede registrar nuevos talleristas y gestionar órdenes</li>
+                    <li><strong>Tallerista:</strong> Puede actualizar el estado de las órdenes de reparación</li>
+                </ul>
+                
+                <h4 style="color: var(--gray-800); margin: 1.5rem 0 1rem 0;">🔧 Funciones Disponibles:</h4>
+                <ul style="color: var(--gray-600); line-height: 1.8;">
+                    <li>Buscar órdenes por número</li>
+                    <li>Actualizar estados de servicios (Pendiente → En Proceso → Terminado → Cancelado)</li>
+                    <li>Ver historial de cambios en cada orden</li>
+                    <li>Registro de talleristas (solo admin)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "http://localhost:3000/api";
+
+        // ----------- REGISTRO DE TALLERISTA -----------
+        document.getElementById('registerForm').onsubmit = async function(e) {
+            e.preventDefault();
+            const username = document.getElementById('registerUser').value;
+            const password = document.getElementById('registerPass').value;
+            const token = localStorage.getItem('taller_token');
+            
+            try {
+                const res = await fetch(`${API_URL}/register`, {
+                    method: 'POST',
+                    headers: { 
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await res.json();
+                
+                if (res.ok && data.success) {
+                    document.getElementById('registerStatus').innerHTML = `
+                        <div class="alert alert-success" style="margin-top: 1rem;">
+                            ✅ <strong>¡Tallerista registrado correctamente!</strong><br>
+                            El usuario <strong>${username}</strong> ya puede acceder al sistema.
+                        </div>`;
+                    document.getElementById('registerForm').reset();
+                } else {
+                    document.getElementById('registerStatus').innerHTML = `
+                        <div class="alert alert-error" style="margin-top: 1rem;">
+                            ❌ <strong>Error:</strong> ${data.error || "Error en el registro"}
+                        </div>`;
+                }
+            } catch (error) {
+                document.getElementById('registerStatus').innerHTML = `
+                    <div class="alert alert-error" style="margin-top: 1rem;">
+                        🔌 <strong>Error de conexión:</strong> ${error.message}
+                    </div>`;
+            }
+        };
+
+        // ----------- LOGIN TALLERISTA/ADMIN -----------
+        document.getElementById('loginForm').onsubmit = async function(e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUser').value;
+            const password = document.getElementById('loginPass').value;
+            
+            try {
+                const res = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await res.json();
+                
+                if (res.ok && data.token) {
+                    localStorage.setItem('taller_token', data.token);
+                    // Decodifica el JWT para saber el rol
+                    const payload = JSON.parse(atob(data.token.split('.')[1]));
+                    
+                    if (payload.role === 'admin') {
+                        document.getElementById('registro-tallerista').style.display = '';
+                    } else {
+                        document.getElementById('registro-tallerista').style.display = 'none';
+                    }
+                    
+                    document.getElementById('loginStatus').innerHTML = `
+                        <div class="alert alert-success" style="margin-top: 1rem;">
+                            ✅ <strong>¡Bienvenido ${username}!</strong><br>
+                            Acceso correcto como ${payload.role}.
+                        </div>`;
+                    
+                    document.getElementById('login-tallerista').style.display = 'none';
+                    document.getElementById('tallerista').style.display = '';
+                } else {
+                    document.getElementById('loginStatus').innerHTML = `
+                        <div class="alert alert-error" style="margin-top: 1rem;">
+                            ❌ <strong>Error de acceso:</strong> ${data.error || "Credenciales incorrectas"}
+                        </div>`;
+                }
+            } catch (error) {
+                document.getElementById('loginStatus').innerHTML = `
+                    <div class="alert alert-error" style="margin-top: 1rem;">
+                        🔌 <strong>Error de conexión:</strong> ${error.message}
+                    </div>`;
+            }
+        };
+
+        // ----------- LOGOUT -----------
+        document.getElementById('logoutBtn').onclick = function() {
+            localStorage.removeItem('taller_token');
+            document.getElementById('login-tallerista').style.display = '';
+            document.getElementById('tallerista').style.display = 'none';
+            document.getElementById('registro-tallerista').style.display = 'none';
+            
+            // Limpiar mensajes
+            document.getElementById('loginStatus').innerHTML = '';
+            document.getElementById('registerStatus').innerHTML = '';
+            document.getElementById('talleristaPanel').innerHTML = '';
+        };
+
+        // ----------- PANEL DE TALLERISTA -----------
+        document.getElementById('talleristaSearchForm').onsubmit = async function (e) {
+            e.preventDefault();
+            const orderId = document.getElementById('talleristaOrderId').value.trim();
+            const panelDiv = document.getElementById('talleristaPanel');
+            
+            if (!orderId) {
+                panelDiv.innerHTML = `
+                    <div class="alert alert-warning" style="margin-top: 1rem;">
+                        ⚠️ <strong>Atención:</strong> Ingresa un número de orden válido.
+                    </div>`;
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/orders/${orderId}`);
+                
+                if (res.ok) {
+                    const order = await res.json();
+                    let html = `
+                        <div class="alert alert-success" style="margin-top: 2rem;">
+                            <h3 style="color: var(--success-color); margin-bottom: 1rem;">
+                                ✅ Orden #${orderId} - Cliente: ${order.customer}
+                            </h3>
+                            
+                            <div style="background: white; padding: 1.5rem; border-radius: 8px;">
+                                <h4 style="color: var(--gray-800); margin-bottom: 1rem;">🛠️ Servicios:</h4>`;
+                    
+                    order.services.forEach((service, idx) => {
+                        html += `
+                            <div style="background: var(--gray-50); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid var(--primary-color);">
+                                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                                    <div>
+                                        <strong style="color: var(--gray-800);">${service.name}</strong>
+                                        <span class="status-badge status-${service.status.replace(' ', '\\ ')}" style="margin-left: 1rem;">${service.status}</span>
+                                    </div>
+                                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                        <select data-idx="${idx}" class="form-input" style="width: auto;">
+                                            <option value="Pendiente" ${service.status === "Pendiente" ? "selected" : ""}>Pendiente</option>
+                                            <option value="En proceso" ${service.status === "En proceso" ? "selected" : ""}>En proceso</option>
+                                            <option value="Terminado" ${service.status === "Terminado" ? "selected" : ""}>Terminado</option>
+                                            <option value="Cancelado" ${service.status === "Cancelado" ? "selected" : ""}>❌ Cancelado</option>
+                                        </select>
+                                        <button class="btn btn-warning actualizar" data-idx="${idx}">
+                                            🔄 Actualizar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>`;
+                    });
+                    
+                    // Mostrar historial si existe
+                    if (order.history && order.history.length > 0) {
+                        html += `
+                            <h4 style="color: var(--gray-800); margin: 1.5rem 0 1rem 0;">📋 Historial:</h4>
+                            <div style="background: var(--gray-50); padding: 1rem; border-radius: 8px; max-height: 200px; overflow-y: auto;">`;
+                        
+                        for (const h of order.history.reverse()) {
+                            html += `
+                                <div style="padding: 0.5rem; border-bottom: 1px solid var(--gray-200);">
+                                    <strong style="color: var(--primary-color);">${h.service}</strong> → 
+                                    <span class="status-badge status-${h.status.replace(' ', '\\ ')}">${h.status}</span>
+                                    ${h.usuario ? `<small style="color: var(--gray-500); margin-left: 0.5rem;">(por ${h.usuario})</small>` : ''}
+                                    <small style="color: var(--gray-500); float: right;">${new Date(h.timestamp).toLocaleString()}</small>
+                                </div>`;
+                        }
+                        html += `</div>`;
+                    }
+                    
+                    html += `
+                            </div>
+                        </div>`;
+                    
+                    panelDiv.innerHTML = html;
+
+                    // Eventos de actualización
+                    panelDiv.querySelectorAll('button.actualizar').forEach(btn => {
+                        btn.onclick = async function() {
+                            const idx = parseInt(this.getAttribute('data-idx'), 10);
+                            const select = panelDiv.querySelector(`select[data-idx="${idx}"]`);
+                            const newStatus = select.value;
+                            const token = localStorage.getItem('taller_token');
+                            
+                            try {
+                                const updateRes = await fetch(`${API_URL}/orders/${orderId}`, {
+                                    method: 'PUT',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'Authorization': `Bearer ${token}`
+                                    },
+                                    body: JSON.stringify({ serviceIndex: idx, status: newStatus })
+                                });
+                                
+                                if (updateRes.ok) {
+                                    // Recargar la vista
+                                    document.getElementById('talleristaSearchForm').dispatchEvent(new Event('submit'));
+                                } else {
+                                    const err = await updateRes.json();
+                                    alert('❌ Error al actualizar: ' + (err.error || 'Error desconocido'));
+                                    
+                                    if (updateRes.status === 401 || updateRes.status === 403) {
+                                        localStorage.removeItem('taller_token');
+                                        location.reload();
+                                    }
+                                }
+                            } catch (error) {
+                                alert('🔌 Error de conexión: ' + error.message);
+                            }
+                        }
+                    });
+
+                } else if (res.status === 404) {
+                    panelDiv.innerHTML = `
+                        <div class="alert alert-error" style="margin-top: 1rem;">
+                            ❌ <strong>Orden no encontrada:</strong> No existe una orden con el número ${orderId}
+                        </div>`;
+                } else {
+                    throw new Error(`Error del servidor: ${res.status}`);
+                }
+            } catch (error) {
+                panelDiv.innerHTML = `
+                    <div class="alert alert-error" style="margin-top: 1rem;">
+                        🔌 <strong>Error de conexión:</strong> ${error.message}
+                    </div>`;
+            }
+        };
+
+        // Auto-check si ya está logueado
+        window.onload = function() {
+            const token = localStorage.getItem('taller_token');
+            if (token) {
+                try {
+                    const payload = JSON.parse(atob(token.split('.')[1]));
+                    
+                    if (payload.role === 'admin') {
+                        document.getElementById('registro-tallerista').style.display = '';
+                    } else {
+                        document.getElementById('registro-tallerista').style.display = 'none';
+                    }
+                    
+                    document.getElementById('login-tallerista').style.display = 'none';
+                    document.getElementById('tallerista').style.display = '';
+                } catch (e) {
+                    // Token inválido, limpiar
+                    localStorage.removeItem('taller_token');
+                }
+            } else {
+                document.getElementById('registro-tallerista').style.display = 'none';
+            }
+        };
+
+        // ----------- NAVEGACIÓN ENTRE PESTAÑAS -----------
+        document.getElementById('tabBuscar').onclick = function() {
+            // Mostrar sección buscar
+            document.getElementById('seccionBuscar').style.display = '';
+            document.getElementById('seccionListar').style.display = 'none';
+            
+            // Actualizar estilos de pestañas
+            this.className = 'btn btn-primary';
+            document.getElementById('tabListar').className = 'btn btn-secondary';
+        };
+
+        document.getElementById('tabListar').onclick = function() {
+            // Mostrar sección listar
+            document.getElementById('seccionBuscar').style.display = 'none';
+            document.getElementById('seccionListar').style.display = '';
+            
+            // Actualizar estilos de pestañas
+            this.className = 'btn btn-primary';
+            document.getElementById('tabBuscar').className = 'btn btn-secondary';
+            
+            // Cargar órdenes automáticamente
+            cargarTodasLasOrdenes();
+        };
+
+        // ----------- LISTAR TODAS LAS ÓRDENES -----------
+        async function cargarTodasLasOrdenes() {
+            const token = localStorage.getItem('taller_token');
+            const filtroEstado = document.getElementById('filtroEstado').value;
+            const listaDiv = document.getElementById('listaOrdenes');
+            
+            if (!token) {
+                listaDiv.innerHTML = `
+                    <div class="alert alert-error">
+                        ❌ <strong>Error:</strong> No tienes permisos para ver las órdenes.
+                    </div>`;
+                return;
+            }
+
+            // Mostrar mensaje de carga
+            listaDiv.innerHTML = `
+                <div style="text-align: center; padding: 2rem; color: var(--gray-600);">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">⏳</div>
+                    <p>Cargando órdenes...</p>
+                </div>`;
+
+            try {
+                const url = filtroEstado === 'todas' 
+                    ? `${API_URL}/orders` 
+                    : `${API_URL}/orders?status=${filtroEstado}`;
+                    
+                const res = await fetch(url, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (res.ok) {
+                    const orders = await res.json();
+                    
+                    if (orders.length === 0) {
+                        listaDiv.innerHTML = `
+                            <div class="alert alert-warning" style="text-align: center;">
+                                📭 <strong>No hay órdenes</strong><br>
+                                ${filtroEstado === 'todas' ? 'No se han creado órdenes aún.' : `No hay órdenes con estado "${filtroEstado}".`}
+                            </div>`;
+                        return;
+                    }
+
+                    // Agrupar órdenes por estado
+                    const ordenesAgrupadas = {
+                        'Pendiente': [],
+                        'En proceso': [],
+                        'Terminado': [],
+                        'Cancelado': []
+                    };
+
+                    orders.forEach(order => {
+                        // Determinar el estado general de la orden
+                        const estados = order.services.map(s => s.status);
+                        let estadoGeneral = 'Pendiente';
+                        
+                        if (estados.every(s => s === 'Terminado')) {
+                            estadoGeneral = 'Terminado';
+                        } else if (estados.some(s => s === 'Cancelado')) {
+                            estadoGeneral = 'Cancelado';
+                        } else if (estados.some(s => s === 'En proceso')) {
+                            estadoGeneral = 'En proceso';
+                        }
+                        
+                        orden = { ...order, estadoGeneral };
+                        ordenesAgrupadas[estadoGeneral].push(orden);
+                    });
+
+                    let html = '';
+
+                    // Solo mostrar secciones que tengan órdenes
+                    Object.entries(ordenesAgrupadas).forEach(([estado, ordenesDelEstado]) => {
+                        if (ordenesDelEstado.length > 0) {
+                            html += `
+                                <div style="margin-bottom: 2rem;">
+                                    <h3 style="color: var(--gray-800); display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                                        <span class="status-badge status-${estado.replace(' ', '\\ ')}">${estado}</span>
+                                        <span style="font-size: 1rem; font-weight: normal; color: var(--gray-600);">(${ordenesDelEstado.length})</span>
+                                    </h3>
+                                    
+                                    <div style="display: grid; gap: 1rem;">`;
+
+                            ordenesDelEstado.forEach(order => {
+                                const fecha = new Date(order.createdAt).toLocaleString();
+                                html += `
+                                    <div style="background: var(--gray-50); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--primary-color);">
+                                        <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+                                            <div>
+                                                <h4 style="color: var(--primary-color); margin-bottom: 0.25rem;">
+                                                    🎫 Orden #${order.id}
+                                                </h4>
+                                                <p style="color: var(--gray-700); margin: 0;">
+                                                    👤 <strong>${order.customer}</strong>
+                                                </p>
+                                                <small style="color: var(--gray-500);">📅 ${fecha}</small>
+                                            </div>
+                                            <button onclick="buscarOrdenEspecifica('${order.id}')" class="btn btn-primary" style="flex-shrink: 0;">
+                                                🔧 Gestionar
+                                            </button>
+                                        </div>
+                                        
+                                        <div>
+                                            <h5 style="color: var(--gray-800); margin-bottom: 0.75rem;">🛠️ Servicios:</h5>
+                                            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">`;
+
+                                order.services.forEach(service => {
+                                    html += `
+                                        <div style="display: flex; align-items: center; gap: 0.5rem; background: white; padding: 0.5rem; border-radius: 4px;">
+                                            <span style="font-size: 0.9rem; color: var(--gray-700);">${service.name}</span>
+                                            <span class="status-badge status-${service.status.replace(' ', '\\ ')}" style="font-size: 0.75rem;">${service.status}</span>
+                                        </div>`;
+                                });
+
+                                html += `
+                                            </div>
+                                        </div>
+                                    </div>`;
+                            });
+
+                            html += `
+                                    </div>
+                                </div>`;
+                        }
+                    });
+
+                    listaDiv.innerHTML = html;
+                    
+                } else if (res.status === 401 || res.status === 403) {
+                    localStorage.removeItem('taller_token');
+                    location.reload();
+                } else {
+                    throw new Error(`Error del servidor: ${res.status}`);
+                }
+            } catch (error) {
+                listaDiv.innerHTML = `
+                    <div class="alert alert-error">
+                        🔌 <strong>Error de conexión:</strong> ${error.message}
+                    </div>`;
+            }
+        }
+
+        // Función auxiliar para buscar una orden específica desde la lista
+        function buscarOrdenEspecifica(orderId) {
+            // Cambiar a la pestaña de búsqueda
+            document.getElementById('tabBuscar').click();
+            
+            // Llenar el campo con el ID de la orden
+            document.getElementById('talleristaOrderId').value = orderId;
+            
+            // Enviar el formulario automáticamente
+            document.getElementById('talleristaSearchForm').dispatchEvent(new Event('submit'));
+        }
+
+        // Event listeners para la lista de órdenes
+        document.getElementById('filtroEstado').onchange = cargarTodasLasOrdenes;
+        document.getElementById('btnRefrescar').onclick = cargarTodasLasOrdenes;
+    </script>
+</body>
+</html>
